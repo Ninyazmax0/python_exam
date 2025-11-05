@@ -1,0 +1,1135 @@
+
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen de Python - Code Lingua</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+     :root {
+         --background: #1a1b26;
+         --foreground: #a9b1d6;
+         --card-background: #24283b;
+         --border: #414868;
+         --accent: #7aa2f7;
+         --accent-dark: #5a7edb;
+         --green: #9ece6a;
+         --yellow: #e0af68;
+         --red: #f7768e;
+         --font-sans: 'Inter', sans-serif;
+         --font-mono: 'JetBrains Mono', monospace;
+     }
+
+     body {
+         color: var(--foreground);
+         font-family: var(--font-sans);
+         margin: 0;
+         padding: 0;
+         position: relative;
+         overflow-x: hidden;
+     }
+
+     /* Fondo animado */
+     .background-container {
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         z-index: -1;
+         transition: opacity 0.5s ease;
+     }
+
+     .background-day, .background-night {
+         position: absolute;
+         top: 0;
+         left: 0;
+         width: 100%;
+         height: 100%;
+         background-size: cover;
+         background-position: center;
+         opacity: 0;
+         transition: opacity 1s ease;
+     }
+
+     .background-day {
+         background-image: url('https://i.pinimg.com/originals/71/f1/b9/71f1b924a56150104ec16828f2d31b7f.gif');
+     }
+
+     .background-night {
+         background-image: url('https://i.pinimg.com/originals/4c/23/98/4c2398e6be397bb08b5cb70b2192d730.gif');
+     }
+
+     .dark .background-night {
+         opacity: 1;
+     }
+
+     .background-day {
+         opacity: 1;
+     }
+
+     .content-box {
+         background-color: rgba(36, 40, 59, 0.85);
+         border: 1px solid var(--border);
+         border-radius: 15px;
+         padding: 2rem;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+         backdrop-filter: blur(10px);
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         min-height: calc(100vh - 4rem);
+         margin: 2rem;
+     }
+
+     /* Index Page Styles */
+     .main-container {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         min-height: calc(100vh - 4rem);
+         text-align: center;
+     }
+
+     .main-title {
+         font-size: 5rem;
+         font-weight: bold;
+         color: var(--accent);
+         text-shadow: 0 0 15px var(--accent);
+         margin-bottom: 1rem;
+     }
+
+     .main-subtitle {
+         font-size: 1.5rem;
+         margin-bottom: 3rem;
+         max-width: 600px;
+     }
+
+     .course-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+         gap: 2.5rem;
+         width: 100%;
+         max-width: 1400px;
+         padding: 2rem 0;
+         justify-items: center;
+     }
+
+     .course-card-link {
+         text-decoration: none;
+     }
+
+     .course-card {
+         background: linear-gradient(135deg, var(--card-background) 0%, rgba(65, 72, 104, 0.5) 100%);
+         border: 1px solid var(--border);
+         border-radius: 20px;
+         padding: 2.5rem;
+         transition: all 0.4s ease;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         gap: 1.5rem;
+         position: relative;
+         overflow: hidden;
+     }
+
+     .course-card::before {
+         content: '';
+         position: absolute;
+         top: 0;
+         left: 0;
+         right: 0;
+         bottom: 0;
+         background: linear-gradient(135deg, rgba(122, 162, 247, 0.1) 0%, rgba(158, 206, 106, 0.1) 100%);
+         opacity: 0;
+         transition: opacity 0.4s ease;
+         border-radius: 20px;
+     }
+
+     .course-card:hover {
+         transform: translateY(-15px) scale(1.05);
+         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(122, 162, 247, 0.3);
+         border-color: var(--accent);
+     }
+
+     .course-card:hover::before {
+         opacity: 1;
+     }
+
+     .course-icon {
+         font-size: 4rem;
+         color: var(--accent);
+         transition: transform 0.3s ease, color 0.3s ease;
+         z-index: 1;
+     }
+
+     .course-card:hover .course-icon {
+         transform: scale(1.1);
+         color: var(--yellow);
+     }
+
+     .course-title {
+         font-size: 1.5rem;
+         font-weight: 600;
+         color: var(--foreground);
+         z-index: 1;
+         transition: color 0.3s ease;
+     }
+
+     .course-card:hover .course-title {
+         color: var(--yellow);
+     }
+
+     .course-description {
+         color: var(--foreground);
+         opacity: 0.7;
+         z-index: 1;
+         transition: opacity 0.3s ease;
+     }
+
+     .course-card:hover .course-description {
+         opacity: 1;
+     }
+
+     /* Course Page Styles */
+     .panel {
+         display: none;
+         animation: fadeIn 0.5s ease;
+         width: 100%;
+     }
+
+     .panel.active {
+         display: flex;
+     }
+
+     @keyframes fadeIn {
+         from {
+             opacity: 0;
+             transform: scale(0.98);
+         }
+         to {
+             opacity: 1;
+             transform: scale(1);
+         }
+     }
+
+     .code-block {
+         background-color: #1e1e2e;
+         border: 1px solid var(--border);
+         color: #c0caf5;
+         font-family: var(--font-mono);
+         border-radius: 8px;
+         margin-top: 1rem;
+     }
+
+     .code-block-header {
+         background-color: var(--border);
+         padding: 0.5rem 1rem;
+         display: flex;
+         align-items: center;
+         gap: 0.5rem;
+     }
+
+     .code-block-header span {
+         width: 12px;
+         height: 12px;
+         border-radius: 50%;
+     }
+
+     .code-block-header .bg-red-500 { background-color: var(--red); }
+     .code-block-header .bg-yellow-500 { background-color: var(--yellow); }
+     .code-block-header .bg-green-500 { background-color: var(--green); }
+
+     pre {
+         margin: 0;
+         padding: 1rem;
+         white-space: pre-wrap;
+         word-wrap: break-word;
+     }
+
+     .code-block .language-html .tag,
+     .code-block .language-css .at-rule,
+     .code-block .language-javascript .keyword {
+         color: var(--accent);
+     }
+
+     .code-block .language-html .string,
+     .code-block .language-css .string,
+     .code-block .language-javascript .string {
+         color: var(--green);
+     }
+
+     .code-block .language-css .property,
+     .code-block .language-javascript .property {
+         color: var(--yellow);
+     }
+
+     .code-block .language-html .comment,
+     .code-block .language-css .comment,
+     .code-block .language-javascript .comment {
+         color: #5c6370;
+     }
+
+     .btn-primary {
+         background-color: var(--accent);
+         color: white;
+         padding: 0.75rem 1.5rem;
+         border-radius: 8px;
+         font-weight: 600;
+         border: none;
+         cursor: pointer;
+         transition: background-color 0.2s;
+     }
+
+     .btn-primary:hover {
+         background-color: var(--accent-dark);
+     }
+
+     .btn-primary:disabled {
+         opacity: 0.5;
+         cursor: not-allowed;
+     }
+
+     .quiz-option {
+         border: 2px solid var(--border);
+         background-color: transparent;
+         color: var(--foreground);
+         padding: 1rem;
+         border-radius: 8px;
+         cursor: pointer;
+         transition: all 0.2s;
+         text-align: left;
+         width: 100%;
+         user-select: none;
+         -webkit-user-select: none;
+         -moz-user-select: none;
+         -ms-user-select: none;
+     }
+
+     .quiz-option:hover:not(.disabled) {
+         border-color: var(--accent);
+         background-color: rgba(122, 162, 247, 0.1);
+     }
+
+     .quiz-option.correct {
+         border-color: var(--green);
+         background-color: rgba(158, 206, 106, 0.1);
+         color: var(--green);
+     }
+
+     .quiz-option.incorrect {
+         border-color: var(--red);
+         background-color: rgba(247, 118, 142, 0.1);
+         color: var(--red);
+     }
+
+     .quiz-option.disabled {
+         pointer-events: none;
+         opacity: 0.7;
+     }
+
+     .level-node {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         position: relative;
+         cursor: pointer;
+     }
+
+     .level-icon-wrapper {
+         width: 64px;
+         height: 64px;
+         border-radius: 50%;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         border: 3px solid;
+         transition: all 0.3s ease;
+     }
+
+     .level-number {
+         margin-top: 8px;
+         font-weight: 600;
+         font-size: 0.9rem;
+     }
+
+     .level-node.locked .level-icon-wrapper {
+         border-color: var(--border);
+         color: var(--border);
+         background-color: transparent;
+     }
+
+     .level-node.unlocked .level-icon-wrapper {
+         border-color: var(--accent);
+         color: var(--accent);
+     }
+
+     .level-node.unlocked:hover .level-icon-wrapper {
+         background-color: var(--accent);
+         color: var(--card-background);
+         transform: scale(1.1);
+     }
+
+     .level-node.completed .level-icon-wrapper {
+         border-color: var(--green);
+         background-color: var(--green);
+         color: var(--card-background);
+     }
+
+     #level-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+         gap: 32px 16px;
+         width: 100%;
+         max-width: 60rem;
+         margin: 0 auto;
+     }
+
+     .progress-bar-bg {
+         background-color: var(--border);
+         border-radius: 9999px;
+         height: 0.625rem;
+     }
+
+     .progress-bar-fill {
+         background-color: var(--accent);
+         height: 0.625rem;
+         border-radius: 9999px;
+     }
+
+     .hidden {
+         display: none;
+     }
+
+     /* Estilos para el contenido de la lección */
+     .lesson-content h3 {
+         color: var(--accent);
+         margin-top: 1.5rem;
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content ul, .lesson-content ol {
+         margin-left: 1.5rem;
+         margin-bottom: 1rem;
+     }
+
+     .lesson-content li {
+         margin-bottom: 0.5rem;
+     }
+
+     .lesson-content code {
+         background-color: rgba(122, 162, 247, 0.1);
+         color: var(--accent);
+         padding: 0.2rem 0.4rem;
+         border-radius: 4px;
+         font-family: var(--font-mono);
+         font-size: 0.9em;
+     }
+
+     .lesson-content strong {
+         color: var(--yellow);
+     }
+
+     .lesson-content p {
+         margin-bottom: 1rem;
+         line-height: 1.6;
+     }
+
+     /* Chat Styles */
+     #chat-toggle-btn {
+         background-color: var(--yellow) !important;
+         color: var(--card-background) !important;
+         border: none !important;
+         box-shadow: 0 4px 12px rgba(224, 175, 104, 0.3) !important;
+     }
+
+     #chat-toggle-btn:hover {
+         background-color: var(--accent) !important;
+         transform: scale(1.1) !important;
+         box-shadow: 0 6px 16px rgba(224, 175, 104, 0.4) !important;
+     }
+
+     #chat-modal {
+         background-color: var(--card-background) !important;
+         border: 1px solid var(--border) !important;
+         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+     }
+
+     #chat-messages {
+         scrollbar-width: thin;
+         scrollbar-color: var(--border) transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar {
+         width: 6px;
+     }
+
+     #chat-messages::-webkit-scrollbar-track {
+         background: transparent;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb {
+         background-color: var(--border);
+         border-radius: 3px;
+     }
+
+     #chat-messages::-webkit-scrollbar-thumb:hover {
+         background-color: var(--accent);
+     }
+
+     #chat-input {
+         background-color: var(--background) !important;
+         border: 1px solid var(--border) !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-input:focus {
+         outline: none !important;
+         border-color: var(--accent) !important;
+         box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2) !important;
+     }
+
+     #chat-send-btn {
+         background-color: var(--accent) !important;
+         border: none !important;
+     }
+
+     #chat-send-btn:hover:not(:disabled) {
+         background-color: var(--accent-dark) !important;
+     }
+
+     #chat-loading {
+         color: var(--yellow) !important;
+     }
+
+     .chat-message-bubble {
+         max-width: 85% !important;
+         padding: 0.75rem !important;
+         border-radius: 12px !important;
+         font-size: 0.875rem !important;
+         line-height: 1.4 !important;
+         word-wrap: break-word !important;
+     }
+
+     .user-message {
+         background-color: var(--accent) !important;
+         color: white !important;
+         margin-left: auto !important;
+     }
+
+     .ai-message {
+         background-color: var(--border) !important;
+         color: var(--foreground) !important;
+         margin-right: auto !important;
+     }
+
+     /* Responsive Chat */
+     @media (max-width: 640px) {
+         #chat-modal {
+             width: 95% !important;
+             height: 400px !important;
+             bottom: 80px !important;
+             right: 2.5% !important;
+             left: 2.5% !important;
+         }
+
+         .chat-message-bubble {
+             max-width: 90% !important;
+             font-size: 0.8rem !important;
+         }
+     }
+
+     @media (min-width: 641px) {
+         #chat-modal {
+             width: 320px !important;
+             height: 450px !important;
+             bottom: 80px !important;
+             right: 24px !important;
+         }
+     }
+
+     /* Asegurar que el modal se oculte correctamente */
+     #chat-modal.hidden {
+         display: none !important;
+     }
+
+     /* Mejorar la funcionalidad del botón de cierre */
+     #chat-close-btn {
+         cursor: pointer !important;
+         padding: 8px !important;
+         border-radius: 6px !important;
+         transition: all 0.2s ease !important;
+         color: var(--foreground) !important;
+     }
+
+     #chat-close-btn:hover {
+         background-color: rgba(255, 255, 255, 0.1) !important;
+         transform: scale(1.1) !important;
+     }
+
+     /* Header del chat mejorado */
+     #chat-modal header {
+         background-color: rgba(26, 27, 38, 0.9) !important;
+         backdrop-filter: blur(10px) !important;
+     }
+
+     /* Prism.js Tokyo Night inspired theme */
+     /* Base from Prism default, colors adapted to Tokyo Night */
+     code[class*="language-"], pre[class*="language-"] {
+         color: #c0caf5;
+         background: #1a1b26;
+         text-shadow: none;
+         font-family: "JetBrains Mono", Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+         font-size: 0.95rem;
+         line-height: 1.6;
+         direction: ltr;
+         text-align: left;
+         white-space: pre;
+         word-spacing: normal;
+         word-break: normal;
+         tab-size: 2;
+         hyphens: none;
+     }
+
+     pre[class*="language-"] {
+         padding: 1rem;
+         margin: 0;
+         overflow: auto;
+         border-radius: 10px;
+         border: 1px solid #414868;
+         background: #1e1e2e;
+     }
+
+     :not(pre) > code[class*="language-"] {
+         padding: .15rem .35rem;
+         border-radius: .35rem;
+         background: rgba(122,162,247,.12);
+         color: #7aa2f7;
+         border: 1px solid #414868;
+     }
+
+     .token.comment,
+     .token.prolog,
+     .token.doctype,
+     .token.cdata {
+         color: #565f89;
+     }
+
+     .token.punctuation { color: #c0caf5; }
+
+     .token.property,
+     .token.tag,
+     .token.boolean,
+     .token.number,
+     .token.constant,
+     .token.deleted {
+         color: #ff9e64;
+     }
+
+     .token.selector,
+     .token.attr-name,
+     .token.string,
+     .token.char,
+     .token.builtin,
+     .token.inserted {
+         color: #9ece6a;
+     }
+
+     .token.operator,
+     .token.entity,
+     .token.url,
+     .language-css .token.string,
+     .style .token.string {
+         color: #c0caf5;
+     }
+
+     .token.atrule,
+     .token.attr-value,
+     .token.keyword { color: #bb9af7; }
+
+     .token.function,
+     .token.class-name { color: #7aa2f7; }
+
+     .token.regex,
+     .token.important,
+     .token.variable { color: #e0af68; }
+
+     .token.bold { font-weight: bold; }
+     .token.italic { font-style: italic; }
+
+     .token.entity { cursor: help; }
+
+     /***** Line numbers plugin *****/
+     pre.line-numbers {
+         position: relative;
+         padding-left: 3.2em;
+         counter-reset: linenumber;
+     }
+     pre.line-numbers > code { position: relative; }
+
+     .line-numbers .line-numbers-rows {
+         position: absolute;
+         pointer-events: none;
+         top: 0; left: 0;
+         width: 3em;
+         border-right: 1px solid #2b3050;
+         background: #1a1b26;
+         user-select: none;
+     }
+
+     .line-numbers-rows > span {
+         display: block;
+         counter-increment: linenumber;
+     }
+
+     .line-numbers-rows > span:before {
+         content: counter(linenumber);
+         display: block;
+         padding: 0 .8em 0 .6em;
+         color: #565f89;
+         text-align: right;
+     }
+
+     /***** Toolbar plugin *****/
+     .prism-toolbar {
+         position: absolute;
+         top: .4rem;
+         right: .4rem;
+     }
+     .prism-toolbar button, .prism-toolbar span {
+         background: #24283b;
+         color: #a9b1d6;
+         border: 1px solid #414868;
+         border-radius: 6px;
+         padding: .25rem .5rem;
+         font-size: .75rem;
+     }
+     .prism-toolbar button:hover { background: #2b3050; }
+    </style>
+</head>
+<body>
+    <div class="background-container">
+    <div class="background-day"></div>
+    <div class="background-night"></div>
+</div>
+
+<div class="content-box">
+    <!-- Panel de Inicio del Examen -->
+    <div id="exam-start-panel" class="panel active flex-col items-center justify-center p-4 relative">
+        <button id="theme-toggle" class="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-700 transition-colors">
+            <i data-lucide="sun" class="w-6 h-6"></i>
+        </button>
+        <h1 class="text-4xl font-bold mb-2" style="color: var(--accent);">Examen de Python</h1>
+        <p class="mb-8">Demuestra tus conocimientos con este examen de 25 preguntas. ¡Buena suerte!</p>
+        <button id="start-exam-btn" class="btn-primary">Comenzar Examen</button>
+        <a href="python_course.html" class="mt-8 text-sm hover:underline" style="color: var(--accent);">Volver al Curso</a>
+    </div>
+
+    <!-- Panel del Examen -->
+    <div id="exam-panel" class="panel flex-col items-center justify-center p-4">
+        <div class="w-full max-w-2xl">
+            <header class="flex justify-between items-center mb-6">
+                <h2 id="exam-title" class="text-2xl font-bold">Examen de Python</h2>
+                <span id="exam-progress" class="font-mono text-lg">1/25</span>
+            </header>
+            <p id="exam-question" class="text-xl md:text-2xl text-center mb-8"></p>
+            <div id="exam-options" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+    </div>
+
+    <!-- Panel de Resultados del Examen -->
+    <div id="exam-results-panel" class="panel flex-col items-center justify-center text-center p-4">
+        <i id="exam-results-icon" class="w-24 h-24 mb-6"></i>
+        <h2 id="exam-results-title" class="text-4xl font-bold mb-4"></h2>
+        <p id="exam-results-score" class="text-2xl mb-2"></p>
+        <p id="exam-results-message" class="mb-8"></p>
+        <div class="mb-8">
+            <h3 class="text-xl font-bold mb-4">Respuestas Correctas:</h3>
+            <div id="correct-answers" class="text-left max-w-2xl mx-auto"></div>
+        </div>
+        <div class="flex gap-4">
+            <button id="retry-exam-btn" class="btn-primary">Repetir Examen</button>
+            <button id="start-coding-exam-btn" class="btn-primary">Examen de Código</button>
+        </div>
+    </div>
+
+    <!-- Panel del Examen de Código -->
+    <div id="coding-exam-panel" class="panel flex-col p-4">
+        <div class="flex-grow w-full max-w-4xl mx-auto flex flex-col">
+            <header class="flex items-center justify-between mb-4">
+                <h2 id="coding-exam-title" class="text-2xl md:text-3xl font-bold"></h2>
+                <button id="close-coding-exam-btn" class="p-2 rounded-full hover:bg-gray-700">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+            </header>
+            <div id="coding-exam-content" class="flex-grow prose prose-invert max-w-none overflow-y-auto"></div>
+            <footer class="flex justify-between items-center mt-6">
+                <button id="prev-coding-btn" class="btn-primary" disabled>Anterior</button>
+                <span id="coding-step" class="font-mono">1 / 5</span>
+                <button id="next-coding-btn" class="btn-primary">Siguiente</button>
+            </footer>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Chat Button -->
+<button id="chat-toggle-btn" class="fixed bottom-6 right-6 p-4 rounded-full shadow-xl z-50 transition-all duration-300 transform hover:scale-110" style="background-color: var(--yellow); color: var(--card-background);">
+    <i data-lucide="message-square" class="w-7 h-7"></i>
+</button>
+
+<!-- Chat Modal -->
+<div id="chat-modal" class="fixed bottom-20 right-6 w-80 h-[450px] rounded-xl shadow-2xl z-50 flex flex-col hidden" style="background-color: var(--card-background); border: 1px solid var(--border);">
+    <!-- Chat Header -->
+    <header class="p-3 border-b flex items-center justify-between" style="border-color: var(--border);">
+        <div class="flex items-center">
+            <i data-lucide="sparkles" class="w-5 h-5 mr-2" style="color: var(--yellow);"></i>
+            <h3 class="font-semibold text-lg" style="color: var(--accent);">Asistente de Código</h3>
+        </div>
+        <button id="chat-close-btn" class="p-1 rounded-full hover:bg-gray-700">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+    </header>
+
+    <!-- Chat Messages Container -->
+    <div id="chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
+        <!-- Mensaje de Bienvenida de la IA -->
+        <div class="flex justify-start">
+            <div class="ai-message chat-message-bubble">
+                Hola. Soy tu Asistente de Código. Pregunta sobre el contenido, la estructura o los conceptos de Python que hemos visto en el curso.
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="p-3 border-t" style="border-color: var(--border);">
+        <div class="flex gap-2">
+            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." class="flex-grow p-2 rounded-lg text-sm focus:ring-0" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);" onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-btn').click()">
+            <button id="chat-send-btn" class="p-2 rounded-lg transition-colors disabled:opacity-50" style="background-color: var(--accent); color: white;">
+                <i data-lucide="send" class="w-5 h-5"></i>
+            </button>
+        </div>
+        <p id="chat-loading" class="text-xs text-center mt-1 hidden" style="color: var(--yellow);">Analizando la estructura...</p>
+    </div>
+</div>
+
+<script>
+// --- DATOS DEL EXAMEN ---
+const examQuestions = [
+    { question: "¿Qué tipo de lenguaje es Python?", options: ["Compilado", "Interpretado", "Binario", "Maquina"], answer: "Interpretado" },
+    { question: "¿Quién creó Python?", options: ["Bill Gates", "Guido van Rossum", "Linus Torvalds", "Mark Zuckerberg"], answer: "Guido van Rossum" },
+    { question: "¿Cuál es la extensión de archivos Python?", options: [".py", ".python", ".pt", ".p"], answer: ".py" },
+    { question: "¿Cómo se escriben los comentarios en Python?", options: ["// comentario", "# comentario", "/* comentario */", "<!-- comentario -->"], answer: "# comentario" },
+    { question: "¿Qué función se usa para imprimir en Python?", options: ["echo", "print", "console.log", "write"], answer: "print" },
+    { question: "¿Cómo se declara una variable en Python?", options: ["var nombre", "let nombre", "nombre =", "declare nombre"], answer: "nombre =" },
+    { question: "¿Qué tipo de dato es 'Hola Mundo'?", options: ["int", "float", "str", "bool"], answer: "str" },
+    { question: "¿Qué tipo de dato es 42?", options: ["str", "float", "int", "bool"], answer: "int" },
+    { question: "¿Qué función convierte a entero?", options: ["str()", "float()", "int()", "bool()"], answer: "int()" },
+    { question: "¿Cuál es un nombre de variable válido?", options: ["2variable", "variable-2", "variable_2", "variable.2"], answer: "variable_2" },
+    { question: "¿Qué operador calcula el resto de una división?", options: ["//", "%", "/", "**"], answer: "%" },
+    { question: "¿Qué operador eleva a potencia?", options: ["^", "**", "*", "pow"], answer: "**" },
+    { question: "¿Qué hace x += 5?", options: ["Asigna 5 a x", "Suma 5 a x", "Multiplica x por 5", "Divide x por 5"], answer: "Suma 5 a x" },
+    { question: "¿Qué operador lógico significa 'Y'?", options: ["or", "not", "and", "&"], answer: "and" },
+    { question: "¿Cuál es el resultado de 10 // 3?", options: ["3.33", "3", "1", "30"], answer: "3" },
+    { question: "¿Qué tipo de bucle es for?", options: ["Definido", "Indefinido", "Ambos", "Ninguno"], answer: "Definido" },
+    { question: "¿Qué tipo de bucle es while?", options: ["Definido", "Indefinido", "Ambos", "Ninguno"], answer: "Indefinido" },
+    { question: "¿Qué hace break?", options: ["Sigue el bucle", "Termina el bucle", "Salta iteración", "Reinicia bucle"], answer: "Termina el bucle" },
+    { question: "¿Qué hace continue?", options: ["Termina bucle", "Salta a siguiente iteración", "Reinicia contador", "Cambia condición"], answer: "Salta a siguiente iteración" },
+    { question: "¿Cómo se itera sobre una lista?", options: ["for elemento in lista", "while elemento in lista", "for i in range(len(lista))", "Todas las anteriores"], answer: "Todas las anteriores" },
+    { question: "¿Qué función genera secuencias?", options: ["sequence()", "range()", "generate()", "seq()"], answer: "range()" },
+    { question: "¿Qué hace range(5)?", options: ["[0,1,2,3,4]", "[1,2,3,4,5]", "[5]", "Error"], answer: "[0,1,2,3,4]" },
+    { question: "¿Cuál es la sintaxis correcta del while?", options: ["while condición do", "while condición:", "while (condición)", "while condición then"], answer: "while condición:" },
+    { question: "¿Qué estructura controla la repetición?", options: ["Condicionales", "Funciones", "Bucles", "Objetos"], answer: "Bucles" },
+    { question: "¿Para qué sirven los bucles?", options: ["Tomar decisiones", "Repetir acciones", "Crear objetos", "Definir funciones"], answer: "Repetir acciones" }
+];
+
+const codingProblems = [
+    {
+        title: "Problema 1: Cálculo de Promedio",
+        content: `<h3>Completa el código</h3>
+        <p>Escribe una función que reciba una lista de números y devuelva el promedio.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def calcular_promedio(numeros):
+    # Tu código aquí
+    pass
+
+# Prueba la función
+lista = [10, 20, 30, 40, 50]
+print(calcular_promedio(lista))  # Debería imprimir 30.0</code></pre></div>`
+    },
+    {
+        title: "Problema 2: Contador de Vocales",
+        content: `<h3>Completa el código</h3>
+        <p>Escribe una función que cuente cuántas vocales hay en una cadena de texto.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def contar_vocales(texto):
+    # Tu código aquí
+    pass
+
+# Prueba la función
+texto = "Hola Mundo"
+print(contar_vocales(texto))  # Debería imprimir 4</code></pre></div>`
+    },
+    {
+        title: "Problema 3: Números Pares",
+        content: `<h3>Completa el código</h3>
+        <p>Escribe una función que devuelva una lista con solo los números pares de una lista dada.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python">def filtrar_pares(numeros):
+    # Tu código aquí
+    pass
+
+# Prueba la función
+lista = [1, 2, 3, 4, 5, 6]
+print(filtrar_pares(lista))  # Debería imprimir [2, 4, 6]</code></pre></div>`
+    },
+    {
+        title: "Problema 4: Calculadora Simple",
+        content: `<h3>Escribe el código desde cero</h3>
+        <p>Crea un programa que funcione como una calculadora simple. Debe pedir al usuario dos números y una operación (+, -, *, /), realizar la operación y mostrar el resultado. Maneja la división por cero.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí</code></pre></div>`
+    },
+    {
+        title: "Problema 5: Lista de Compras",
+        content: `<h3>Escribe el código desde cero</h3>
+        <p>Crea un programa que permita al usuario agregar items a una lista de compras. El programa debe mostrar la lista actual después de cada adición y permitir salir escribiendo 'salir'.</p>
+        <div class="code-block rounded-lg overflow-hidden mt-4"><div class="code-block-header px-4 py-2 flex items-center gap-2"><span class="w-3 h-3 bg-red-500 rounded-full"></span><span class="w-3 h-3 bg-yellow-500 rounded-full"></span><span class="w-3 h-3 bg-green-500 rounded-full"></span></div><pre class="p-4"><code class="language-python"># Tu código aquí</code></pre></div>`
+    }
+];
+
+// --- LÓGICA DE LA APLICACIÓN ---
+let currentExamQuestion = 0, examScore = 0, currentCodingStep = 0;
+const EXAM_ID = 'python_exam';
+const panels = { examStart: document.getElementById('exam-start-panel'), exam: document.getElementById('exam-panel'), examResults: document.getElementById('exam-results-panel'), codingExam: document.getElementById('coding-exam-panel') };
+const savedTheme = localStorage.getItem('theme') || 'dark';
+if (savedTheme === 'light') document.documentElement.classList.remove('dark');
+
+function showPanel(panelName) { 
+    Object.values(panels).forEach(p => p.classList.remove('active')); 
+    panels[panelName].classList.add('active'); 
+    lucide.createIcons(); 
+}
+
+function saveExamScore(score) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser.id) {
+        currentUser.pythonExamScore = score;
+        currentUser.lastExamDate = new Date().toISOString();
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+        const allUsers = JSON.parse(localStorage.getItem('allUsers') || '[]');
+        const userIndex = allUsers.findIndex(u => u.id === currentUser.id);
+        if (userIndex !== -1) {
+            allUsers[userIndex] = currentUser;
+            localStorage.setItem('allUsers', JSON.stringify(allUsers));
+        }
+    }
+}
+
+function startExam() {
+    currentExamQuestion = 0;
+    examScore = 0;
+    renderExamQuestion();
+    showPanel('exam');
+}
+
+function renderExamQuestion() {
+    const questionData = examQuestions[currentExamQuestion];
+    document.getElementById('exam-progress').textContent = `${currentExamQuestion + 1}/25`;
+    document.getElementById('exam-question').textContent = questionData.question;
+    const optionsContainer = document.getElementById('exam-options');
+    optionsContainer.innerHTML = '';
+
+    const letters = ['a', 'b', 'c', 'd'];
+    const shuffledOptions = [...questionData.options].sort(() => Math.random() - 0.5);
+
+    letters.forEach((letter, index) => {
+        const optionButton = document.createElement('button');
+        optionButton.textContent = `${letter}) ${shuffledOptions[index]}`;
+        optionButton.className = 'quiz-option p-4 rounded-lg text-left';
+        optionButton.dataset.answer = shuffledOptions[index];
+        optionButton.onclick = () => checkExamAnswer(optionButton, shuffledOptions[index], questionData.answer);
+        optionsContainer.appendChild(optionButton);
+    });
+}
+
+function checkExamAnswer(button, selectedAnswer, correctAnswer) {
+    const options = document.querySelectorAll('#exam-options .quiz-option');
+    options.forEach(opt => {
+        opt.classList.add('disabled');
+        if (opt.textContent.includes(correctAnswer)) {
+            opt.classList.add('correct');
+        } else if (opt.textContent.includes(selectedAnswer)) {
+            opt.classList.add('incorrect');
+        }
+    });
+    if (selectedAnswer === correctAnswer) examScore++;
+    setTimeout(() => {
+        currentExamQuestion++;
+        if (currentExamQuestion < examQuestions.length) {
+            renderExamQuestion();
+        } else {
+            showExamResults();
+        }
+    }, 1500);
+}
+
+function showExamResults() {
+    const grade = Math.round((examScore / 25) * 10);
+    const passed = grade >= 6;
+    const resultsIcon = document.getElementById('exam-results-icon');
+    document.getElementById('exam-results-title').textContent = passed ? '¡Felicidades!' : 'Sigue Practicando';
+    resultsIcon.setAttribute('data-lucide', passed ? 'award' : 'book-open');
+    resultsIcon.style.color = passed ? 'var(--green)' : 'var(--yellow)';
+    document.getElementById('exam-results-score').textContent = `Tu nota: ${grade}/10 (${examScore}/25 respuestas correctas)`;
+    document.getElementById('exam-results-message').textContent = passed ? '¡Has aprobado el examen!' : 'Necesitas estudiar más. ¡No te rindas!';
+
+    // Mostrar respuestas correctas
+    const correctAnswersDiv = document.getElementById('correct-answers');
+    correctAnswersDiv.innerHTML = '';
+    examQuestions.forEach((q, index) => {
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'mb-2';
+        answerDiv.innerHTML = `<strong>Pregunta ${index + 1}:</strong> ${q.question}<br><strong>Respuesta correcta:</strong> ${q.answer}`;
+        correctAnswersDiv.appendChild(answerDiv);
+    });
+
+    saveExamScore(grade);
+    showPanel('examResults');
+}
+
+function startCodingExam() {
+    currentCodingStep = 0;
+    renderCodingProblem();
+    showPanel('codingExam');
+}
+
+function renderCodingProblem() {
+    const problemData = codingProblems[currentCodingStep];
+    document.getElementById('coding-exam-title').textContent = problemData.title;
+    document.getElementById('coding-exam-content').innerHTML = problemData.content;
+    document.getElementById('coding-step').textContent = `${currentCodingStep + 1} / ${codingProblems.length}`;
+    const prevBtn = document.getElementById('prev-coding-btn');
+    prevBtn.disabled = currentCodingStep === 0;
+    document.getElementById('next-coding-btn').textContent = (currentCodingStep === codingProblems.length - 1) ? 'Finalizar' : 'Siguiente';
+}
+
+// Event Listeners
+document.getElementById('start-exam-btn').addEventListener('click', startExam);
+document.getElementById('retry-exam-btn').addEventListener('click', startExam);
+document.getElementById('start-coding-exam-btn').addEventListener('click', startCodingExam);
+
+document.getElementById('next-coding-btn').addEventListener('click', () => {
+    if (currentCodingStep < codingProblems.length - 1) {
+        currentCodingStep++;
+        renderCodingProblem();
+    } else {
+        showPanel('examStart');
+    }
+});
+
+document.getElementById('prev-coding-btn').addEventListener('click', () => {
+    if (currentCodingStep > 0) {
+        currentCodingStep--;
+        renderCodingProblem();
+    }
+});
+
+document.getElementById('close-coding-exam-btn').addEventListener('click', () => {
+    showPanel('examStart');
+});
+
+// Theme toggle
+document.getElementById('theme-toggle').addEventListener('click', () => {
+    const isDark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const icon = document.querySelector('#theme-toggle i');
+    icon.setAttribute('data-lucide', isDark ? 'sun' : 'moon');
+    lucide.createIcons();
+});
+
+// Chat functionality (similar to course)
+document.getElementById('chat-toggle-btn').addEventListener('click', () => {
+    const chatModal = document.getElementById('chat-modal');
+    chatModal.classList.toggle('hidden');
+});
+
+document.getElementById('chat-close-btn').addEventListener('click', () => {
+    document.getElementById('chat-modal').classList.add('hidden');
+});
+
+document.getElementById('chat-send-btn').addEventListener('click', sendMessage);
+
+function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    if (!message) return;
+
+    addMessageToChat(message, 'user');
+    input.value = '';
+
+    const loading = document.getElementById('chat-loading');
+    loading.classList.remove('hidden');
+
+    setTimeout(() => {
+        loading.classList.add('hidden');
+        const response = generateAIResponse(message);
+        addMessageToChat(response, 'ai');
+    }, 1000);
+}
+
+function addMessageToChat(message, sender) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
+
+    const bubble = document.createElement('div');
+    bubble.className = `chat-message-bubble ${sender === 'user' ? 'user-message' : 'ai-message'}`;
+    bubble.textContent = message;
+
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function generateAIResponse(message) {
+    const lowerMessage = message.toLowerCase();
+
+    if (lowerMessage.includes('hola') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+        return '¡Hola! ¿En qué puedo ayudarte con el examen de Python?';
+    } else if (lowerMessage.includes('examen') || lowerMessage.includes('pregunta')) {
+        return 'El examen consta de 25 preguntas sobre los conceptos básicos de Python. ¡Buena suerte!';
+    } else if (lowerMessage.includes('variable') || lowerMessage.includes('variables')) {
+        return 'Las variables en Python son contenedores para almacenar datos. Se crean simplemente asignando un valor: nombre = "Ana", edad = 25.';
+    } else if (lowerMessage.includes('función') || lowerMessage.includes('funciones')) {
+        return 'Las funciones en Python se definen con "def". Pueden recibir parámetros y devolver valores con "return".';
+    } else if (lowerMessage.includes('lista') || lowerMessage.includes('listas')) {
+        return 'Las listas en Python son colecciones ordenadas y mutables. Se crean con corchetes: frutas = ["manzana", "banana"].';
+    } else if (lowerMessage.includes('diccionario') || lowerMessage.includes('diccionarios')) {
+        return 'Los diccionarios almacenan pares clave-valor. Se crean con llaves: persona = {"nombre": "Ana", "edad": 25}.';
+    } else if (lowerMessage.includes('error') || lowerMessage.includes('problema')) {
+        return 'Si tienes un error, revisa la sintaxis y asegúrate de que todas las variables estén definidas. ¿Puedes describir el problema con más detalle?';
+    } else {
+        return 'Interesante pregunta sobre Python. ¿Podrías ser más específico para que pueda ayudarte mejor?';
+    }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+    showPanel('examStart');
+    lucide.createIcons();
+});
+
+// Prism.js core and languages
+</script>
+
+<!-- Prism.js core and languages -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/prism.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-markup.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-css.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-javascript.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+</body>
+</html>
