@@ -439,143 +439,6 @@
          line-height: 1.6;
      }
 
-     /* Chat Styles */
-     #chat-toggle-btn {
-         background-color: var(--yellow) !important;
-         color: var(--card-background) !important;
-         border: none !important;
-         box-shadow: 0 4px 12px rgba(224, 175, 104, 0.3) !important;
-     }
-
-     #chat-toggle-btn:hover {
-         background-color: var(--accent) !important;
-         transform: scale(1.1) !important;
-         box-shadow: 0 6px 16px rgba(224, 175, 104, 0.4) !important;
-     }
-
-     #chat-modal {
-         background-color: var(--card-background) !important;
-         border: 1px solid var(--border) !important;
-         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-     }
-
-     #chat-messages {
-         scrollbar-width: thin;
-         scrollbar-color: var(--border) transparent;
-     }
-
-     #chat-messages::-webkit-scrollbar {
-         width: 6px;
-     }
-
-     #chat-messages::-webkit-scrollbar-track {
-         background: transparent;
-     }
-
-     #chat-messages::-webkit-scrollbar-thumb {
-         background-color: var(--border);
-         border-radius: 3px;
-     }
-
-     #chat-messages::-webkit-scrollbar-thumb:hover {
-         background-color: var(--accent);
-     }
-
-     #chat-input {
-         background-color: var(--background) !important;
-         border: 1px solid var(--border) !important;
-         color: var(--foreground) !important;
-     }
-
-     #chat-input:focus {
-         outline: none !important;
-         border-color: var(--accent) !important;
-         box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2) !important;
-     }
-
-     #chat-send-btn {
-         background-color: var(--accent) !important;
-         border: none !important;
-     }
-
-     #chat-send-btn:hover:not(:disabled) {
-         background-color: var(--accent-dark) !important;
-     }
-
-     #chat-loading {
-         color: var(--yellow) !important;
-     }
-
-     .chat-message-bubble {
-         max-width: 85% !important;
-         padding: 0.75rem !important;
-         border-radius: 12px !important;
-         font-size: 0.875rem !important;
-         line-height: 1.4 !important;
-         word-wrap: break-word !important;
-     }
-
-     .user-message {
-         background-color: var(--accent) !important;
-         color: white !important;
-         margin-left: auto !important;
-     }
-
-     .ai-message {
-         background-color: var(--border) !important;
-         color: var(--foreground) !important;
-         margin-right: auto !important;
-     }
-
-     /* Responsive Chat */
-     @media (max-width: 640px) {
-         #chat-modal {
-             width: 95% !important;
-             height: 400px !important;
-             bottom: 80px !important;
-             right: 2.5% !important;
-             left: 2.5% !important;
-         }
-
-         .chat-message-bubble {
-             max-width: 90% !important;
-             font-size: 0.8rem !important;
-         }
-     }
-
-     @media (min-width: 641px) {
-         #chat-modal {
-             width: 320px !important;
-             height: 450px !important;
-             bottom: 80px !important;
-             right: 24px !important;
-         }
-     }
-
-     /* Asegurar que el modal se oculte correctamente */
-     #chat-modal.hidden {
-         display: none !important;
-     }
-
-     /* Mejorar la funcionalidad del botón de cierre */
-     #chat-close-btn {
-         cursor: pointer !important;
-         padding: 8px !important;
-         border-radius: 6px !important;
-         transition: all 0.2s ease !important;
-         color: var(--foreground) !important;
-     }
-
-     #chat-close-btn:hover {
-         background-color: rgba(255, 255, 255, 0.1) !important;
-         transform: scale(1.1) !important;
-     }
-
-     /* Header del chat mejorado */
-     #chat-modal header {
-         background-color: rgba(26, 27, 38, 0.9) !important;
-         backdrop-filter: blur(10px) !important;
-     }
 
      /* Prism.js Tokyo Night inspired theme */
      /* Base from Prism default, colors adapted to Tokyo Night */
@@ -776,74 +639,35 @@
     </div>
 </div>
 
-<!-- Floating Chat Button -->
-<button id="chat-toggle-btn" class="fixed bottom-6 right-6 p-4 rounded-full shadow-xl z-50 transition-all duration-300 transform hover:scale-110" style="background-color: var(--yellow); color: var(--card-background);">
-    <i data-lucide="message-square" class="w-7 h-7"></i>
-</button>
-
-<!-- Chat Modal -->
-<div id="chat-modal" class="fixed bottom-20 right-6 w-80 h-[450px] rounded-xl shadow-2xl z-50 flex flex-col hidden" style="background-color: var(--card-background); border: 1px solid var(--border);">
-    <!-- Chat Header -->
-    <header class="p-3 border-b flex items-center justify-between" style="border-color: var(--border);">
-        <div class="flex items-center">
-            <i data-lucide="sparkles" class="w-5 h-5 mr-2" style="color: var(--yellow);"></i>
-            <h3 class="font-semibold text-lg" style="color: var(--accent);">Asistente de Código</h3>
-        </div>
-        <button id="chat-close-btn" class="p-1 rounded-full hover:bg-gray-700">
-            <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-    </header>
-
-    <!-- Chat Messages Container -->
-    <div id="chat-messages" class="flex-grow p-3 overflow-y-auto space-y-3">
-        <!-- Mensaje de Bienvenida de la IA -->
-        <div class="flex justify-start">
-            <div class="ai-message chat-message-bubble">
-                Hola. Soy tu Asistente de Código. Pregunta sobre el contenido, la estructura o los conceptos de Python que hemos visto en el curso.
-            </div>
-        </div>
-    </div>
-
-    <!-- Chat Input Area -->
-    <div class="p-3 border-t" style="border-color: var(--border);">
-        <div class="flex gap-2">
-            <input type="text" id="chat-input" placeholder="Escribe tu pregunta..." class="flex-grow p-2 rounded-lg text-sm focus:ring-0" style="background-color: var(--background); border: 1px solid var(--border); color: var(--foreground);" onkeydown="if(event.key === 'Enter') document.getElementById('chat-send-btn').click()">
-            <button id="chat-send-btn" class="p-2 rounded-lg transition-colors disabled:opacity-50" style="background-color: var(--accent); color: white;">
-                <i data-lucide="send" class="w-5 h-5"></i>
-            </button>
-        </div>
-        <p id="chat-loading" class="text-xs text-center mt-1 hidden" style="color: var(--yellow);">Analizando la estructura...</p>
-    </div>
-</div>
 
 <script>
 // --- DATOS DEL EXAMEN ---
 const examQuestions = [
-    { question: "¿Qué tipo de lenguaje es Python?", options: ["Compilado", "Interpretado", "Binario", "Maquina"], answer: "Interpretado" },
-    { question: "¿Quién creó Python?", options: ["Bill Gates", "Guido van Rossum", "Linus Torvalds", "Mark Zuckerberg"], answer: "Guido van Rossum" },
-    { question: "¿Cuál es la extensión de archivos Python?", options: [".py", ".python", ".pt", ".p"], answer: ".py" },
-    { question: "¿Cómo se escriben los comentarios en Python?", options: ["// comentario", "# comentario", "/* comentario */", "<!-- comentario -->"], answer: "# comentario" },
-    { question: "¿Qué función se usa para imprimir en Python?", options: ["echo", "print", "console.log", "write"], answer: "print" },
-    { question: "¿Cómo se declara una variable en Python?", options: ["var nombre", "let nombre", "nombre =", "declare nombre"], answer: "nombre =" },
-    { question: "¿Qué tipo de dato es 'Hola Mundo'?", options: ["int", "float", "str", "bool"], answer: "str" },
-    { question: "¿Qué tipo de dato es 42?", options: ["str", "float", "int", "bool"], answer: "int" },
-    { question: "¿Qué función convierte a entero?", options: ["str()", "float()", "int()", "bool()"], answer: "int()" },
-    { question: "¿Cuál es un nombre de variable válido?", options: ["2variable", "variable-2", "variable_2", "variable.2"], answer: "variable_2" },
-    { question: "¿Qué operador calcula el resto de una división?", options: ["//", "%", "/", "**"], answer: "%" },
-    { question: "¿Qué operador eleva a potencia?", options: ["^", "**", "*", "pow"], answer: "**" },
-    { question: "¿Qué hace x += 5?", options: ["Asigna 5 a x", "Suma 5 a x", "Multiplica x por 5", "Divide x por 5"], answer: "Suma 5 a x" },
-    { question: "¿Qué operador lógico significa 'Y'?", options: ["or", "not", "and", "&"], answer: "and" },
-    { question: "¿Cuál es el resultado de 10 // 3?", options: ["3.33", "3", "1", "30"], answer: "3" },
-    { question: "¿Qué tipo de bucle es for?", options: ["Definido", "Indefinido", "Ambos", "Ninguno"], answer: "Definido" },
-    { question: "¿Qué tipo de bucle es while?", options: ["Definido", "Indefinido", "Ambos", "Ninguno"], answer: "Indefinido" },
-    { question: "¿Qué hace break?", options: ["Sigue el bucle", "Termina el bucle", "Salta iteración", "Reinicia bucle"], answer: "Termina el bucle" },
-    { question: "¿Qué hace continue?", options: ["Termina bucle", "Salta a siguiente iteración", "Reinicia contador", "Cambia condición"], answer: "Salta a siguiente iteración" },
-    { question: "¿Cómo se itera sobre una lista?", options: ["for elemento in lista", "while elemento in lista", "for i in range(len(lista))", "Todas las anteriores"], answer: "Todas las anteriores" },
-    { question: "¿Qué función genera secuencias?", options: ["sequence()", "range()", "generate()", "seq()"], answer: "range()" },
-    { question: "¿Qué hace range(5)?", options: ["[0,1,2,3,4]", "[1,2,3,4,5]", "[5]", "Error"], answer: "[0,1,2,3,4]" },
-    { question: "¿Cuál es la sintaxis correcta del while?", options: ["while condición do", "while condición:", "while (condición)", "while condición then"], answer: "while condición:" },
-    { question: "¿Qué estructura controla la repetición?", options: ["Condicionales", "Funciones", "Bucles", "Objetos"], answer: "Bucles" },
-    { question: "¿Para qué sirven los bucles?", options: ["Tomar decisiones", "Repetir acciones", "Crear objetos", "Definir funciones"], answer: "Repetir acciones" }
+    { question: "¿Cuál es la palabra clave para definir una función?", options: ["function", "def", "func", "define"], answer: "def" },
+    { question: "¿Qué método añade un elemento al final de una lista?", options: ["add()", "append()", "insert()", "push()"], answer: "append()" },
+    { question: "¿Cómo se accede al primer elemento de una lista?", options: ["lista[1]", "lista[0]", "lista.first()", "lista.get(0)"], answer: "lista[0]" },
+    { question: "¿Qué tipo de dato es True?", options: ["str", "int", "bool", "float"], answer: "bool" },
+    { question: "¿Cuál es el operador de igualdad?", options: ["=", "==", "!=", "<>"], answer: "==" },
+    { question: "¿Qué función convierte un string a minúsculas?", options: ["lower()", "min()", "small()", "tolower()"], answer: "lower()" },
+    { question: "¿Cómo se importa un módulo?", options: ["include modulo", "import modulo", "use modulo", "require modulo"], answer: "import modulo" },
+    { question: "¿Qué devuelve len() en un string?", options: ["Número de palabras", "Número de caracteres", "Longitud en bytes", "Número de líneas"], answer: "Número de caracteres" },
+    { question: "¿Cuál es la sintaxis correcta para un if?", options: ["if condición then", "if condición:", "if (condición)", "if condición do"], answer: "if condición:" },
+    { question: "¿Qué hace el operador //?", options: ["División normal", "División entera", "Módulo", "Potencia"], answer: "División entera" },
+    { question: "¿Cómo se crea un diccionario vacío?", options: ["{}", "[]", "()", "dict()"], answer: "{}" },
+    { question: "¿Qué método elimina un elemento de un diccionario?", options: ["delete()", "remove()", "pop()", "erase()"], answer: "pop()" },
+    { question: "¿Cuál es el resultado de 2 ** 3?", options: ["6", "8", "9", "16"], answer: "8" },
+    { question: "¿Qué función lee entrada del usuario?", options: ["read()", "input()", "get()", "scan()"], answer: "input()" },
+    { question: "¿Cómo se concatena strings?", options: ["+", "&", "concat()", "join()"], answer: "+" },
+    { question: "¿Qué hace return en una función?", options: ["Termina la función", "Devuelve un valor", "Imprime un mensaje", "Todas las anteriores"], answer: "Todas las anteriores" },
+    { question: "¿Cuál es el índice negativo para el último elemento?", options: ["-0", "-1", "-last", "-end"], answer: "-1" },
+    { question: "¿Qué operador lógico significa 'O'?", options: ["and", "or", "not", "xor"], answer: "or" },
+    { question: "¿Cómo se define un parámetro por defecto?", options: ["def func(param=default)", "def func(param=default):", "def func(default=param)", "def func(param:default)"], answer: "def func(param=default):" },
+    { question: "¿Qué hace sorted()?", options: ["Ordena una lista", "Filtra una lista", "Busca en una lista", "Cuenta elementos"], answer: "Ordena una lista" },
+    { question: "¿Cuál es la extensión correcta para archivos Python?", options: [".py", ".python", ".pyth", ".pt"], answer: ".py" },
+    { question: "¿Qué tipo de error es NameError?", options: ["Sintaxis", "Variable no definida", "División por cero", "Archivo no encontrado"], answer: "Variable no definida" },
+    { question: "¿Cómo se itera sobre las claves de un diccionario?", options: ["for key in dict", "for key in dict.keys()", "Ambas son correctas", "Ninguna"], answer: "Ambas son correctas" },
+    { question: "¿Qué hace list()?", options: ["Crea una lista", "Convierte a lista", "Ambas", "Ninguna"], answer: "Ambas" },
+    { question: "¿Cuál es el resultado de 'Hola' + ' Mundo'?", options: ["Hola Mundo", "HolaMundo", "Error", "Hola Mundo"], answer: "Hola Mundo" }
 ];
 
 const codingProblems = [
@@ -1048,71 +872,6 @@ document.getElementById('theme-toggle').addEventListener('click', () => {
     lucide.createIcons();
 });
 
-// Chat functionality (similar to course)
-document.getElementById('chat-toggle-btn').addEventListener('click', () => {
-    const chatModal = document.getElementById('chat-modal');
-    chatModal.classList.toggle('hidden');
-});
-
-document.getElementById('chat-close-btn').addEventListener('click', () => {
-    document.getElementById('chat-modal').classList.add('hidden');
-});
-
-document.getElementById('chat-send-btn').addEventListener('click', sendMessage);
-
-function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const message = input.value.trim();
-    if (!message) return;
-
-    addMessageToChat(message, 'user');
-    input.value = '';
-
-    const loading = document.getElementById('chat-loading');
-    loading.classList.remove('hidden');
-
-    setTimeout(() => {
-        loading.classList.add('hidden');
-        const response = generateAIResponse(message);
-        addMessageToChat(response, 'ai');
-    }, 1000);
-}
-
-function addMessageToChat(message, sender) {
-    const messagesContainer = document.getElementById('chat-messages');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-
-    const bubble = document.createElement('div');
-    bubble.className = `chat-message-bubble ${sender === 'user' ? 'user-message' : 'ai-message'}`;
-    bubble.textContent = message;
-
-    messageDiv.appendChild(bubble);
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
-
-function generateAIResponse(message) {
-    const lowerMessage = message.toLowerCase();
-
-    if (lowerMessage.includes('hola') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
-        return '¡Hola! ¿En qué puedo ayudarte con el examen de Python?';
-    } else if (lowerMessage.includes('examen') || lowerMessage.includes('pregunta')) {
-        return 'El examen consta de 25 preguntas sobre los conceptos básicos de Python. ¡Buena suerte!';
-    } else if (lowerMessage.includes('variable') || lowerMessage.includes('variables')) {
-        return 'Las variables en Python son contenedores para almacenar datos. Se crean simplemente asignando un valor: nombre = "Ana", edad = 25.';
-    } else if (lowerMessage.includes('función') || lowerMessage.includes('funciones')) {
-        return 'Las funciones en Python se definen con "def". Pueden recibir parámetros y devolver valores con "return".';
-    } else if (lowerMessage.includes('lista') || lowerMessage.includes('listas')) {
-        return 'Las listas en Python son colecciones ordenadas y mutables. Se crean con corchetes: frutas = ["manzana", "banana"].';
-    } else if (lowerMessage.includes('diccionario') || lowerMessage.includes('diccionarios')) {
-        return 'Los diccionarios almacenan pares clave-valor. Se crean con llaves: persona = {"nombre": "Ana", "edad": 25}.';
-    } else if (lowerMessage.includes('error') || lowerMessage.includes('problema')) {
-        return 'Si tienes un error, revisa la sintaxis y asegúrate de que todas las variables estén definidas. ¿Puedes describir el problema con más detalle?';
-    } else {
-        return 'Interesante pregunta sobre Python. ¿Podrías ser más específico para que pueda ayudarte mejor?';
-    }
-}
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
